@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
             default: []
         }
     ],
-    followers: [
+    following: [
         {
             type: mongoose.Schema.Types.ObjectId, // 16 charecters
             ref: "User",
