@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.routes.js'
 import userRouter from './routes/user.routes.js'
 import postRouter from './routes/post.routes.js'
+import notificationRouter from './routes/notification.routes.js';
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(express.urlencoded({extended: true})); //to parse url-encoded form data
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/notifications", notificationRouter);
 
 export default app;
