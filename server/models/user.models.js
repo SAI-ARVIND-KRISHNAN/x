@@ -56,6 +56,13 @@ const userSchema = new mongoose.Schema({
             ref: "Post",
             default: []
         }
+    ],
+    bookmarked: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post",
+            default: []
+        }
     ]
 }, {timestamps: true});
 

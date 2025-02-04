@@ -229,3 +229,48 @@ export const getUserPosts = async (req, res) => {
         return res.status(500).json({error: "Internal server error"});
     }
 }
+
+export const bookmarkPost = async (req, res) => {
+
+    try {
+        const userId = req.user._id;
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+        const user = await User.findById(userId).select("-password");
+
+        if (!post){
+            return res.status(404).json({error: "Post not found"});
+        }
+
+        const isBookmarked =  user.bookmarked.includes(postId);
+
+        if (!isBookmarked){
+            await User.updateOne({_id:userId}, {$push: {bookmarked: postId}});
+            res.status(200).json({message : "bookmarked this post"});
+        } else {
+            await User.updateOne({_id:userId}, {$pull: {bookmarked: postId}});
+            res.status(200).json({message : "unmarked this post"});
+        }
+    } catch (error) {
+        console.log("Error in getBookmarkedPost controller", error);
+        res.status(500).json({error: "Internal Server Error"});
+    }
+    
+}
+
+export const getBookmarkedPost = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({error: "user not found"});
+        }
+        console.log(user.bookmarked)
+        const bookmarkedPosts = user.bookmarked;
+        res.status(200).json(bookmarkedPosts);
+
+    } catch (error) {
+        console.log("Error in getBookmarkedPost controller", error);
+        res.status(500).json({error: "Internal Server Error"});
+    }
+}
