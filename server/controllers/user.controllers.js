@@ -93,6 +93,19 @@ export const getSuggestedUsers = async (req, res) => {
     }
 }
 
+export const getUsers = async(req, res) => {
+    try{
+        const query = req.params.username || '';
+        // the 'i' indicates case-insensitive matching 
+        const users = await User.find({username: { $regex: new RegExp(query, 'i')}}).select("username"); 
+        res.status(200).json(users);
+
+    } catch (error) {
+        console.log("Error in getUsers controller", error);
+        res.status(500).json({error: "Internal Server Error"});
+    }
+}
+
 export const updateUser = async (req, res) => {
     
         const {username, fullName, email, currentPassword, newPassword, bio, link} = req.body;
